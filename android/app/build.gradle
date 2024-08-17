@@ -40,7 +40,7 @@ android {
     }
 }
 
-dependices{
+dependencies{
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
 }
 flutter {
