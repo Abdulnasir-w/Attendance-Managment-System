@@ -1,5 +1,8 @@
+import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
+import '../../Components/custom_button.dart';
 import '../../Components/custom_text_form.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -20,44 +23,104 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    nameController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20,
+      body: Padding(
+        padding: const EdgeInsets.only(right: 15, left: 15, top: 150),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SvgPicture.asset(
+                "assets/login.svg",
+                height: 270,
+                width: 270,
+              ),
+              Form(
+                key: formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    MyCustomTextFormField(
+                      keyBoardType: TextInputType.emailAddress,
+                      labelText: 'Name',
+                      prefixIcon: Icons.person_2_outlined,
+                      hintText: 'Enter Your Name',
+                      textEditingController: nameController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    MyCustomTextFormField(
+                      keyBoardType: TextInputType.emailAddress,
+                      labelText: 'Email',
+                      prefixIcon: Icons.email_outlined,
+                      hintText: 'Enter Your Email',
+                      textEditingController: emailController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    MyCustomTextFormField(
+                      keyBoardType: TextInputType.visiblePassword,
+                      labelText: 'Password',
+                      prefixIcon: Icons.lock_outline,
+                      hintText: 'Enter Your Password',
+                      textEditingController: passwordController,
+                      isPassfield: true,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              MyCustomButton(
+                title: "Sign Up",
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpScreen()));
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Divider(
+                color: Colors.black,
+                thickness: 1,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Already have an Account ? ",
+                    style: TextStyle(color: Colors.black45),
+                  ),
+                  InkWell(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen())),
+                      child: Text(
+                        "Login",
+                        style: TextStyle(color: Colors.blue[300]),
+                      ))
+                ],
+              )
+            ],
           ),
-          MyCustomTextFormField(
-            keyBoardType: TextInputType.name,
-            labelText: 'Name',
-            prefixIcon: Icons.lock_outline,
-            hintText: 'Enter Your Name',
-            textEditingController: nameController,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          MyCustomTextFormField(
-            keyBoardType: TextInputType.emailAddress,
-            labelText: 'Email',
-            prefixIcon: Icons.lock_outline,
-            hintText: 'Enter Your Email',
-            textEditingController: emailController,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          MyCustomTextFormField(
-            keyBoardType: TextInputType.visiblePassword,
-            labelText: 'Password',
-            prefixIcon: Icons.lock_outline,
-            hintText: 'Enter Your Password',
-            textEditingController: passwordController,
-          ),
-        ],
+        ),
       ),
     );
   }

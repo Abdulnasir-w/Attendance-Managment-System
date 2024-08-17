@@ -14,9 +14,11 @@ class MyCustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 50,
+      width: 400,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.black87,
+        color: Colors.lightBlue,
       ),
       child: TextButton(
         onPressed: () => onPressed,
@@ -29,9 +31,9 @@ class MyCustomButton extends StatelessWidget {
             : Text(
                 title,
                 style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
+                    color: Colors.white,
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600),
               ),
       ),
     );
