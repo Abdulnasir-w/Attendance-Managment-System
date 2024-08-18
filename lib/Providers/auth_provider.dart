@@ -79,6 +79,16 @@ class AuthProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  // Forgot password
+  Future<void> forgotPassword(String email) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+      notifyListeners();
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
   // Fetch Current User Data
   Future<void> fetchUserData() async {
     User? firebaseUser = auth.currentUser;

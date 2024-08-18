@@ -83,12 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               MyCustomButton(
                 title: "Login",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpScreen()));
-                },
+                onPressed: () {},
               ),
               const SizedBox(
                 height: 10,
