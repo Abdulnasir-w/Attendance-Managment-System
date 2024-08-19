@@ -12,8 +12,8 @@ class AdminHomeScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(
-            child: Text(
+          const Center(
+            child: const Text(
               "Admin Home Screen",
               style: TextStyle(
                 color: Colors.black,
@@ -21,7 +21,7 @@ class AdminHomeScreen extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           MyCustomButton(
