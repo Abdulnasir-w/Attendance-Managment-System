@@ -10,23 +10,24 @@ class AuthProvider extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // Admin
-  Future<void> admin() async {
-    try {
-      UserCredential admin = await auth.createUserWithEmailAndPassword(
-        email: "admin@gmail.com",
-        password: "Admin123@",
-      );
-      await firestore.collection("users").doc(admin.user!.uid).set({
-        'name': 'Admin',
-        'email': "admin@gmail.com",
-        'role': 'admin',
-      });
-      notifyListeners();
-    } catch (e) {
-      throw Exception(e);
-    }
-  }
+  // // Admin
+  // Future<void> admin() async {
+  //   try {
+  //     UserCredential admin = await auth.signInWithEmailAndPassword(
+  //       email: "admin@gmail.com",
+  //       password: "Admin123@",
+  //     );
+  //     await firestore.collection("users").doc(admin.user!.uid).set({
+  //       'name': 'Admin',
+  //       'email': "admin@gmail.com",
+  //       'role': 'admin',
+  //     });
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print("Admin Error::::> $e");
+  //     throw Exception(e);
+  //   }
+  // }
 
   //Sign Up User
   Future<void> signUp(String name, String email, String password) async {
@@ -50,6 +51,7 @@ class AuthProvider extends ChangeNotifier {
       );
       notifyListeners();
     } catch (e) {
+      print("Sign Up Error::::::> $e");
       throw Exception(e);
     }
   }
@@ -68,6 +70,7 @@ class AuthProvider extends ChangeNotifier {
       _user = UserModel.fromFireStore(userDoc);
       notifyListeners();
     } catch (e) {
+      print("Sign in Error::::::> $e");
       throw Exception(e);
     }
   }

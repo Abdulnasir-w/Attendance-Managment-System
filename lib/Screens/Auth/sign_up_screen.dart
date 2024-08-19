@@ -31,12 +31,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _signUp() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    print("Sign Up");
     if (formKey.currentState!.validate()) {
       try {
         setState(() {
           isLoading = true;
         });
-        authProvider.signUp(
+        await authProvider.signUp(
           nameController.text.trim(),
           emailController.text.trim(),
           passwordController.text.trim(),
@@ -55,6 +56,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Sign Up Error::::");
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(right: 15, left: 15, top: 150),
@@ -110,12 +112,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
               MyCustomButton(
                 title: "Sign Up",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SignUpScreen()));
-                },
+                isLoading: isLoading,
+                onPressed: _signUp,
               ),
               const SizedBox(
                 height: 10,

@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../Components/custom_text_form.dart';
+import 'fogot_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -30,13 +31,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
+    print("onTap");
     if (formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       try {
         setState(() {
           isLoading = true;
         });
-        authProvider.signIn(
+        await authProvider.signIn(
           emailController.text.trim(),
           passwordController.text.trim(),
         );
@@ -62,6 +64,9 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.only(right: 15, left: 15, top: 150),
         child: SingleChildScrollView(
@@ -104,7 +109,12 @@ class _LoginScreenState extends State<LoginScreen> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FogotScreen()));
+                  },
                   child: Text(
                     "Forgot Password ?",
                     style: TextStyle(
@@ -118,8 +128,8 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               MyCustomButton(
                 title: "Login",
-                isLoading: true,
-                onPressed: () => _login(),
+                isLoading: isLoading,
+                onPressed: _login,
               ),
               const SizedBox(
                 height: 10,

@@ -21,7 +21,7 @@ class MyCustomButton extends StatelessWidget {
         color: Colors.lightBlue,
       ),
       child: TextButton(
-        onPressed: () => onPressed,
+        onPressed: onPressed,
         child: isLoading
             ? const CircularProgressIndicator(
                 color: Colors.white,
