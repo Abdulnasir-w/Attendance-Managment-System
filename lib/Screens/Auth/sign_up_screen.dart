@@ -1,6 +1,8 @@
+import 'package:attendance_ms/Providers/auth_provider.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../Components/custom_button.dart';
 import '../../Components/custom_text_form.dart';
@@ -17,6 +19,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -24,6 +27,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
     emailController.dispose();
     passwordController.dispose();
     nameController.dispose();
+  }
+
+  Future<void> _signUp() async {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    if (formKey.currentState!.validate()) {
+      try {
+        setState(() {
+          isLoading = true;
+        });
+        authProvider.signUp(
+          nameController.text.trim(),
+          emailController.text.trim(),
+          passwordController.text.trim(),
+        );
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()));
+      } catch (e) {
+        setState(() {
+          isLoading = false;
+        });
+      } finally {
+        isLoading = false;
+      }
+    }
   }
 
   @override
