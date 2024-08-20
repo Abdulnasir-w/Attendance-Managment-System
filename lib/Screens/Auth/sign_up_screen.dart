@@ -1,5 +1,6 @@
 import 'package:attendance_ms/Providers/auth_provider.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -56,14 +57,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print("Sign Up Error::::");
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(right: 15, left: 15, top: 150),
+        padding: const EdgeInsets.only(right: 15, left: 15),
         child: SingleChildScrollView(
+          // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SizedBox(
+                height: 130,
+              ),
               SvgPicture.asset(
                 "assets/login.svg",
                 height: 270,

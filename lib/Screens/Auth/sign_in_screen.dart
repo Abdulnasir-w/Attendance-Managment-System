@@ -1,4 +1,5 @@
 import 'package:attendance_ms/Components/custom_button.dart';
+import 'package:attendance_ms/Components/custom_snakbar.dart';
 import 'package:attendance_ms/Providers/auth_provider.dart';
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_up_screen.dart';
@@ -31,7 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
-    print("onTap");
     if (formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       try {
@@ -49,7 +49,23 @@ class _LoginScreenState extends State<LoginScreen> {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const UserHomeScreen()));
         }
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(
+            context,
+            message: "Login Successfully",
+            alignment: Alignment.topCenter,
+            type: SnackBarType.success,
+          );
+        }
       } catch (e) {
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(
+            context,
+            message: e.toString(),
+            alignment: Alignment.topCenter,
+            type: SnackBarType.error,
+          );
+        }
         setState(() {
           isLoading = false;
         });
@@ -64,15 +80,20 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-      ),
       body: Padding(
-        padding: const EdgeInsets.only(right: 15, left: 15, top: 150),
+        padding: const EdgeInsets.only(
+          right: 15,
+          left: 15,
+        ),
         child: SingleChildScrollView(
+          // keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              const SizedBox(
+                height: 130,
+              ),
               SvgPicture.asset(
                 "assets/login.svg",
                 height: 270,

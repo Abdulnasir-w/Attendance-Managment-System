@@ -34,6 +34,7 @@ class CustomSnakbar extends StatelessWidget {
     }
     return SafeArea(
       child: Align(
+        alignment: alignment,
         child: Material(
           color: Colors.transparent,
           child: Container(
@@ -46,6 +47,7 @@ class CustomSnakbar extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
             child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
                   width: 70,
@@ -58,7 +60,7 @@ class CustomSnakbar extends StatelessWidget {
                     animationPath,
                     fit: BoxFit.scaleDown,
                     backgroundLoading: true,
-                    alignment: Alignment.center,
+                    // alignment: Alignment.center,
                   ),
                 ),
                 const SizedBox(

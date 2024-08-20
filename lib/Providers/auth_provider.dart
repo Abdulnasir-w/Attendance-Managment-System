@@ -6,53 +6,45 @@ import 'package:flutter/material.dart';
 class AuthProvider extends ChangeNotifier {
   UserModel? _user;
   UserModel? get user => _user;
+  late BuildContext context;
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  // // Admin
-  // Future<void> admin() async {
-  //   try {
-  //     UserCredential admin = await auth.signInWithEmailAndPassword(
-  //       email: "admin@gmail.com",
-  //       password: "Admin123@",
-  //     );
-  //     await firestore.collection("users").doc(admin.user!.uid).set({
-  //       'name': 'Admin',
-  //       'email': "admin@gmail.com",
-  //       'role': 'admin',
-  //     });
-  //     notifyListeners();
-  //   } catch (e) {
-  //     print("Admin Error::::> $e");
-  //     throw Exception(e);
-  //   }
-  // }
-
   //Sign Up User
   Future<void> signUp(String name, String email, String password) async {
     try {
+      // Create a new user with email and password
       UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      // Get the newly created user
       User? firebaseUser = userCredential.user;
 
-      await firestore.collection('users').doc(firebaseUser!.uid).set({
-        'name': name,
-        'email': email,
-        'role': 'user',
-      });
+      // Check if the user is not null
+      if (firebaseUser != null) {
+        // Save additional user information in Firestore
+        await firestore.collection('users').doc(firebaseUser.uid).set({
+          'name': name,
+          'email': email,
+          'role': 'user',
+        });
 
-      _user = UserModel(
-        uId: firebaseUser.uid,
-        email: email,
-        role: 'user',
-      );
-      notifyListeners();
+        // Update local user model
+        _user = UserModel(
+          uId: firebaseUser.uid,
+          email: email,
+          role: 'user',
+        );
+        notifyListeners();
+      } else {
+        throw Exception('Failed to create user');
+      }
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Auth Error: ${e.message}');
     } catch (e) {
-      print("Sign Up Error::::::> $e");
-      throw Exception(e);
+      throw Exception('Unexpected Error: ${e.toString()}');
     }
   }
 
@@ -69,9 +61,10 @@ class AuthProvider extends ChangeNotifier {
           await firestore.collection('users').doc(firebaseUser!.uid).get();
       _user = UserModel.fromFireStore(userDoc);
       notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Auth Error: ${e.message}');
     } catch (e) {
-      print("Sign in Error::::::> $e");
-      throw Exception(e);
+      throw Exception('Unexpected Error: ${e.toString()}');
     }
   }
 
@@ -87,8 +80,10 @@ class AuthProvider extends ChangeNotifier {
     try {
       await auth.sendPasswordResetEmail(email: email);
       notifyListeners();
+    } on FirebaseAuthException catch (e) {
+      throw Exception('Error: ${e.message}');
     } catch (e) {
-      throw Exception(e);
+      throw Exception('Unexpected Error: ${e.toString()}');
     }
   }
 
@@ -96,8 +91,13 @@ class AuthProvider extends ChangeNotifier {
   Future<void> fetchUserData() async {
     User? firebaseUser = auth.currentUser;
     if (firebaseUser != null) {
-      DocumentSnapshot userInfo =
-          await firestore.collection('users').doc(firebaseUser.uid).get();
+      DocumentSnapshot userInfo;
+      if (firebaseUser.email == 'admin@gmail.com') {
+        userInfo = await firestore.collection('users').doc('admin').get();
+      } else {
+        userInfo =
+            await firestore.collection('users').doc(firebaseUser.uid).get();
+      }
       _user = UserModel.fromFireStore(userInfo);
     }
   }
