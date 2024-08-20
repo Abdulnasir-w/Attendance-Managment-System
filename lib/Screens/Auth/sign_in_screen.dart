@@ -4,6 +4,7 @@ import 'package:attendance_ms/Providers/auth_provider.dart';
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_up_screen.dart';
 import 'package:attendance_ms/Screens/User/home_screen.dart';
+import 'package:attendance_ms/Utils/errors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -58,10 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
           );
         }
       } catch (e) {
+        print(" aboveerrorrr ::::> ${e.runtimeType}");
         if (mounted) {
+          print("errorrr ::::> $e");
+          String error = getCustomErrorMessage(e);
           CustomSnakbar.showCustomSnackbar(
             context,
-            message: e.toString(),
+            message: error,
             alignment: Alignment.topCenter,
             type: SnackBarType.error,
           );

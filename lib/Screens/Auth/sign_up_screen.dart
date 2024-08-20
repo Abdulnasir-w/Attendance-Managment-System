@@ -1,6 +1,6 @@
+import 'package:attendance_ms/Components/custom_snakbar.dart';
 import 'package:attendance_ms/Providers/auth_provider.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +32,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> _signUp() async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    print("Sign Up");
     if (formKey.currentState!.validate()) {
       try {
         setState(() {
@@ -43,9 +42,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
           emailController.text.trim(),
           passwordController.text.trim(),
         );
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => const LoginScreen()));
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(
+            context,
+            message: "Account Created Successfully",
+            alignment: Alignment.topCenter,
+            type: SnackBarType.success,
+          );
+        }
+
+        if (mounted) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginScreen()));
+        }
       } catch (e) {
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(
+            context,
+            message: e.toString(),
+            alignment: Alignment.topCenter,
+            type: SnackBarType.error,
+          );
+        }
         setState(() {
           isLoading = false;
         });

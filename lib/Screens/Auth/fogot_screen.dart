@@ -46,7 +46,7 @@ class _FogotScreenState extends State<FogotScreen> {
       if (mounted) {
         CustomSnakbar.showCustomSnackbar(
           context,
-          message: "Unexpected Error Occur",
+          message: e.toString(),
           alignment: Alignment.topCenter,
           type: SnackBarType.error,
         );
