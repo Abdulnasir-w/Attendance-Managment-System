@@ -23,16 +23,21 @@ class MyCustomButton extends StatelessWidget {
       child: TextButton(
         onPressed: onPressed,
         child: isLoading
-            ? const CircularProgressIndicator(
-                color: Colors.white,
-                strokeWidth: 2.0,
-                strokeAlign: BorderSide.strokeAlignCenter,
+            ? const Center(
+                child: SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                  ),
+                ),
               )
             : Text(
                 title,
                 style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600),
               ),
       ),

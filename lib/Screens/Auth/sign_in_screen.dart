@@ -4,6 +4,7 @@ import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_up_screen.dart';
 import 'package:attendance_ms/Screens/User/home_screen.dart';
+import 'package:attendance_ms/Utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -123,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icons.email_outlined,
                       hintText: 'Enter Your Email',
                       textEditingController: emailController,
+                      validator: (value) => validateEmail(value),
                     ),
                     const SizedBox(
                       height: 20,
@@ -134,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       hintText: 'Enter Your Password',
                       textEditingController: passwordController,
                       isPassfield: true,
+                      validator: (value) => validateNotEmpty(value),
                     ),
                   ],
                 ),

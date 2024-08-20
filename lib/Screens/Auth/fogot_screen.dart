@@ -1,5 +1,6 @@
 import 'package:attendance_ms/Components/custom_text_form.dart';
 import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
+import 'package:attendance_ms/Utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -101,6 +102,7 @@ class _FogotScreenState extends State<FogotScreen> {
                 prefixIcon: Icons.email_outlined,
                 hintText: 'Enter Your Email',
                 textEditingController: emailController,
+                validator: (value) => validateEmail(value),
               ),
             ),
             const SizedBox(

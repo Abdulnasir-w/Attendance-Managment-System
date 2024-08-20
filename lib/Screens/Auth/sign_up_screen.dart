@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 import '../../Components/custom_button.dart';
 import '../../Components/custom_text_form.dart';
+import '../../Utils/validator.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -116,6 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       prefixIcon: Icons.person_2_outlined,
                       hintText: 'Enter Your Name',
                       textEditingController: nameController,
+                      validator: (value) => validateNotEmpty(value),
                     ),
                     const SizedBox(
                       height: 20,
@@ -126,6 +128,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       prefixIcon: Icons.email_outlined,
                       hintText: 'Enter Your Email',
                       textEditingController: emailController,
+                      validator: (value) => validateEmail(value),
                     ),
                     const SizedBox(
                       height: 20,
@@ -137,6 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: 'Enter Your Password',
                       textEditingController: passwordController,
                       isPassfield: true,
+                      validator: (value) => validateNotEmpty(value),
                     ),
                   ],
                 ),

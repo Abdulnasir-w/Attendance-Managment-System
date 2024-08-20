@@ -7,6 +7,8 @@ class MyCustomTextFormField extends StatefulWidget {
   final TextEditingController textEditingController;
   final TextInputType keyBoardType;
   final bool isPassfield;
+  final String? Function(String?)? validator;
+
   const MyCustomTextFormField({
     super.key,
     required this.hintText,
@@ -15,6 +17,7 @@ class MyCustomTextFormField extends StatefulWidget {
     required this.textEditingController,
     required this.keyBoardType,
     this.isPassfield = false,
+    this.validator,
   });
 
   @override
@@ -74,6 +77,7 @@ class _MyCustomTextFormFieldState extends State<MyCustomTextFormField> {
           ),
         ),
       ),
+      validator: widget.validator,
     );
   }
 }
