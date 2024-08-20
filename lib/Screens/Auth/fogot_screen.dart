@@ -1,5 +1,6 @@
 import 'package:attendance_ms/Components/custom_text_form.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart';
+import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,8 @@ class _FogotScreenState extends State<FogotScreen> {
   }
 
   Future<void> forgotPassword() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<myauth.AuthProvider>(context, listen: false);
     try {
       if (formKey.currentState!.validate()) {
         setState(() {
@@ -41,6 +43,15 @@ class _FogotScreenState extends State<FogotScreen> {
             type: SnackBarType.success,
           );
         }
+      }
+    } on FirebaseAuthException catch (e) {
+      if (mounted) {
+        CustomSnakbar.showCustomSnackbar(
+          context,
+          message: e.code,
+          alignment: Alignment.topCenter,
+          type: SnackBarType.error,
+        );
       }
     } catch (e) {
       if (mounted) {

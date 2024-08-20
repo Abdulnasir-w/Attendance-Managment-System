@@ -1,6 +1,7 @@
 import 'package:attendance_ms/Components/custom_snakbar.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart';
+import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +32,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> _signUp() async {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final authProvider =
+        Provider.of<myauth.AuthProvider>(context, listen: false);
     if (formKey.currentState!.validate()) {
       try {
         setState(() {
@@ -54,6 +56,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (mounted) {
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const LoginScreen()));
+        }
+      } on FirebaseAuthException catch (e) {
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(
+            context,
+            message: e.code,
+            alignment: Alignment.topCenter,
+            type: SnackBarType.error,
+          );
         }
       } catch (e) {
         if (mounted) {

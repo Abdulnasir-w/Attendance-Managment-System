@@ -1,10 +1,10 @@
 import 'package:attendance_ms/Components/custom_button.dart';
 import 'package:attendance_ms/Components/custom_snakbar.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart';
+import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_up_screen.dart';
 import 'package:attendance_ms/Screens/User/home_screen.dart';
-import 'package:attendance_ms/Utils/errors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
@@ -33,8 +33,9 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
+    final authProvider =
+        Provider.of<myauth.AuthProvider>(context, listen: false);
     if (formKey.currentState!.validate()) {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
       try {
         setState(() {
           isLoading = true;
@@ -58,14 +59,20 @@ class _LoginScreenState extends State<LoginScreen> {
             type: SnackBarType.success,
           );
         }
-      } catch (e) {
-        print(" aboveerrorrr ::::> ${e.runtimeType}");
+      } on FirebaseAuthException catch (e) {
         if (mounted) {
-          print("errorrr ::::> $e");
-          String error = getCustomErrorMessage(e);
           CustomSnakbar.showCustomSnackbar(
             context,
-            message: error,
+            message: e.code,
+            alignment: Alignment.topCenter,
+            type: SnackBarType.error,
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(
+            context,
+            message: e.toString(),
             alignment: Alignment.topCenter,
             type: SnackBarType.error,
           );

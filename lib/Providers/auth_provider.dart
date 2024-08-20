@@ -1,5 +1,4 @@
 import 'package:attendance_ms/Model/user_model.dart';
-import 'package:attendance_ms/Utils/errors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +42,7 @@ class AuthProvider extends ChangeNotifier {
         throw Exception('Failed to create user');
       }
     } on FirebaseAuthException catch (e) {
-      throw Exception(e);
+      throw Exception(e.code);
     } catch (e) {
       throw Exception(e);
     }
@@ -63,7 +62,7 @@ class AuthProvider extends ChangeNotifier {
       _user = UserModel.fromFireStore(userDoc);
       notifyListeners();
     } on FirebaseAuthException catch (e) {
-      throw Exception(getCustomErrorMessage(e));
+      throw Exception(e.code);
     } catch (e) {
       throw Exception(e);
     }
@@ -82,7 +81,7 @@ class AuthProvider extends ChangeNotifier {
       await auth.sendPasswordResetEmail(email: email);
       notifyListeners();
     } on FirebaseAuthException catch (e) {
-      throw Exception(getCustomErrorMessage(e));
+      throw Exception(e.code);
     } catch (e) {
       throw Exception(e);
     }
