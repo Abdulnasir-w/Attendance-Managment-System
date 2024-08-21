@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:attendance_ms/Model/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class AuthProvider extends ChangeNotifier {
@@ -10,6 +13,7 @@ class AuthProvider extends ChangeNotifier {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseStorage storage = FirebaseStorage.instance;
   //Sign Up User
   Future<void> signUp(String name, String email, String password) async {
     try {
@@ -25,7 +29,7 @@ class AuthProvider extends ChangeNotifier {
       // Check if the user is not null
       if (firebaseUser != null) {
         // Save additional user information in Firestore
-        await firestore.collection('users').doc(firebaseUser.uid).set({
+        await firestore.collection('users').doc(firebaseUser.displayName).set({
           'name': name,
           'email': email,
           'role': 'user',
@@ -35,6 +39,7 @@ class AuthProvider extends ChangeNotifier {
         _user = UserModel(
           uId: firebaseUser.uid,
           email: email,
+          name: name,
           role: 'user',
         );
         notifyListeners();
@@ -110,5 +115,38 @@ class AuthProvider extends ChangeNotifier {
   /// Check if the user is an admin
   bool isAdmin() {
     return _user?.role == 'admin';
+  }
+
+  // Profile Pic
+  Future<void> uploadPictoFirebaseStorage(String filePath) async {
+    try {
+      User? firebaseUser = auth.currentUser;
+      if (firebaseUser == null) return;
+
+      final extension = filePath.split('.').last;
+      final storageRef = storage
+          .ref()
+          .child("Profile Picture/${firebaseUser.displayName}.$extension");
+
+      final uploadPic = storageRef.putFile(File(filePath));
+      await uploadPic;
+
+      final downloadUrl = await storageRef.getDownloadURL();
+      await firestore.collection("users").doc(firebaseUser.displayName).update({
+        'profilePicUrl': downloadUrl,
+      });
+      _user = UserModel(
+        email: _user!.email,
+        role: _user!.role,
+        uId: _user!.uId,
+        name: _user!.name,
+        profilePicUrl: downloadUrl,
+      );
+      notifyListeners();
+    } on FirebaseException catch (e) {
+      throw Exception(e.code);
+    } catch (e) {
+      throw Exception('Failed to upload profile picture: $e');
+    }
   }
 }
