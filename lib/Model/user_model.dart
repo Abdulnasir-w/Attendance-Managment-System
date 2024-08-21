@@ -15,6 +15,14 @@ class UserModel {
     required this.role,
   });
   factory UserModel.fromFireStore(DocumentSnapshot doc) {
+    if (doc.exists || doc.data() == null) {
+      return UserModel(
+        uId: "",
+        email: "",
+        role: "",
+        name: "",
+      );
+    }
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
     return UserModel(
       uId: doc.id,

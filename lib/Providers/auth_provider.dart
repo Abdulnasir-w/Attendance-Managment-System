@@ -29,7 +29,7 @@ class AuthProvider extends ChangeNotifier {
       // Check if the user is not null
       if (firebaseUser != null) {
         // Save additional user information in Firestore
-        await firestore.collection('users').doc(firebaseUser.displayName).set({
+        await firestore.collection('users').doc(firebaseUser.uid).set({
           'name': name,
           'email': email,
           'role': 'user',
@@ -103,7 +103,18 @@ class AuthProvider extends ChangeNotifier {
         userInfo =
             await firestore.collection('users').doc(firebaseUser.uid).get();
       }
-      _user = UserModel.fromFireStore(userInfo);
+      if (userInfo.exists) {
+        _user = UserModel.fromFireStore(userInfo);
+        notifyListeners();
+      } else {
+        _user = UserModel(
+          uId: '',
+          email: '',
+          name: '',
+          role: '',
+        );
+      }
+      // notifyListeners();
     }
   }
 
@@ -132,9 +143,10 @@ class AuthProvider extends ChangeNotifier {
       await uploadPic;
 
       final downloadUrl = await storageRef.getDownloadURL();
-      await firestore.collection("users").doc(firebaseUser.displayName).update({
+      await firestore.collection("users").doc(firebaseUser.uid).update({
         'profilePicUrl': downloadUrl,
       });
+
       _user = UserModel(
         email: _user!.email,
         role: _user!.role,

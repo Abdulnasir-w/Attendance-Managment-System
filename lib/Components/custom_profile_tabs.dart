@@ -16,10 +16,12 @@ class CustomProfileTabs extends StatelessWidget {
       height: 45,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.grey[200],
+        color: Colors.white,
+        border: Border.all(
+            color: Colors.black, style: BorderStyle.solid, width: 2.0),
         boxShadow: const [
           BoxShadow(
-            color: Colors.black,
+            color: Colors.grey,
             offset: Offset.zero,
             blurRadius: 1.0,
             spreadRadius: 1.9,
@@ -34,14 +36,17 @@ class CustomProfileTabs extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(fontSize: 17, color: Color(0xff407BFF)),
+              style: const TextStyle(
+                  fontSize: 17,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500),
             ),
             Text(
               details,
               style: const TextStyle(
                   fontSize: 17,
                   fontStyle: FontStyle.italic,
-                  color: Color(0xff407BFF)),
+                  color: Colors.black),
             )
           ],
         ),
