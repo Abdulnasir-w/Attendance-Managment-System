@@ -45,13 +45,20 @@ class _LoginScreenState extends State<LoginScreen> {
           emailController.text.trim(),
           passwordController.text.trim(),
         );
-        if (authProvider.isAdmin()) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const AdminHomeScreen()));
-        } else {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const UserHomeScreen()));
+        if (mounted) {
+          if (authProvider.isAdmin()) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const AdminHomeScreen()));
+          } else {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const UserHomeScreen()));
+          }
         }
+
         if (mounted) {
           CustomSnakbar.showCustomSnackbar(
             context,
