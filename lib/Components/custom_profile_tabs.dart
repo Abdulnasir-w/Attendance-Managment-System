@@ -13,21 +13,10 @@ class CustomProfileTabs extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 450,
-      height: 45,
+      height: 55,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        color: Colors.white,
-        border: Border.all(
-            color: Colors.black, style: BorderStyle.solid, width: 2.0),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset.zero,
-            blurRadius: 1.0,
-            spreadRadius: 1.9,
-            blurStyle: BlurStyle.outer,
-          ),
-        ],
+        color: Colors.lightBlue,
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -38,15 +27,15 @@ class CustomProfileTabs extends StatelessWidget {
               title,
               style: const TextStyle(
                   fontSize: 17,
-                  color: Colors.black,
+                  color: Colors.white,
                   fontWeight: FontWeight.w500),
             ),
             Text(
               details,
               style: const TextStyle(
-                  fontSize: 17,
+                  fontSize: 16,
                   fontStyle: FontStyle.italic,
-                  color: Colors.black),
+                  color: Colors.white),
             )
           ],
         ),

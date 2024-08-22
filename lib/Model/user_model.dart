@@ -21,6 +21,7 @@ class UserModel {
         email: "",
         role: "",
         name: "",
+        profilePicUrl: "",
       );
     }
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;

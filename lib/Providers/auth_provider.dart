@@ -14,6 +14,7 @@ class AuthProvider extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
   final FirebaseStorage storage = FirebaseStorage.instance;
+
   //Sign Up User
   Future<void> signUp(String name, String email, String password) async {
     try {
@@ -33,6 +34,7 @@ class AuthProvider extends ChangeNotifier {
           'name': name,
           'email': email,
           'role': 'user',
+          'profilePicUrl': null,
         });
 
         // Update local user model
@@ -41,6 +43,7 @@ class AuthProvider extends ChangeNotifier {
           email: email,
           name: name,
           role: 'user',
+          profilePicUrl: null,
         );
         notifyListeners();
       } else {
@@ -104,7 +107,13 @@ class AuthProvider extends ChangeNotifier {
             await firestore.collection('users').doc(firebaseUser.uid).get();
       }
       if (userInfo.exists) {
-        _user = UserModel.fromFireStore(userInfo);
+        _user = UserModel(
+          email: userInfo['email'],
+          role: userInfo['role'],
+          name: userInfo['name'],
+          profilePicUrl: userInfo['profilePicUrl'] ?? "",
+          uId: firebaseUser.uid,
+        );
         notifyListeners();
       } else {
         _user = UserModel(
@@ -112,9 +121,9 @@ class AuthProvider extends ChangeNotifier {
           email: '',
           name: '',
           role: '',
+          profilePicUrl: '',
         );
       }
-      // notifyListeners();
     }
   }
 
