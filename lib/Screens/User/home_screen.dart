@@ -1,9 +1,11 @@
-import 'package:attendance_ms/Components/custom_button.dart';
+import 'package:attendance_ms/Screens/User/leave_request_screen.dart';
+import 'package:attendance_ms/Screens/User/mark_attendance_screen.dart';
 import 'package:attendance_ms/Screens/User/profile_screen.dart';
+import 'package:attendance_ms/Screens/User/view_attendance_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
-import '../../Providers/auth_provider.dart';
-import '../Auth/sign_in_screen.dart';
+import '../../Components/custom_tiles.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -17,29 +19,74 @@ class UserHomeScreen extends StatelessWidget {
           "A M S",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 25,
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileScreen())),
-              icon: const Icon(
-                Icons.person_2_outlined,
-                size: 35,
-                color: Colors.white70,
-              ))
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const ProfileScreen())),
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: SvgPicture.asset(
+                "assets/profile.svg",
+                width: 37,
+                height: 37,
+              ),
+            ),
+          ),
         ],
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Tiles(
+              title: 'Mark Attendance',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MarkAttendanceScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Tiles(
+              title: 'View Attendance',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ViewAttendanceScreen(),
+                  ),
+                );
+              },
+            ),
+            const SizedBox(
+              height: 15,
+            ),
+            Tiles(
+              title: 'Request For Leave',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LeaveRequestScreen(),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
