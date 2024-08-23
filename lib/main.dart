@@ -1,4 +1,6 @@
+import 'package:attendance_ms/Providers/attendance_provider.dart';
 import 'package:attendance_ms/Providers/auth_provider.dart';
+import 'package:attendance_ms/Providers/leave_request_provider.dart';
 import 'package:attendance_ms/Screens/Auth/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -25,9 +27,10 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => LeaveRequestProvider()),
+        ChangeNotifierProvider(create: (_) => AttendanceProvider()),
       ],
       child: const MaterialApp(
-        
         title: "Attendance Management System",
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
