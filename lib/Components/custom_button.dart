@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyCustomButton extends StatelessWidget {
   final String title;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isLoading;
   const MyCustomButton({
     super.key,
