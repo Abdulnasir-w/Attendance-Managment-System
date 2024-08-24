@@ -4,12 +4,33 @@ import 'package:flutter/material.dart';
 
 class AttendanceProvider extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  bool _isAttendanceMarked = false;
+  bool get isAttendanceMarked => _isAttendanceMarked;
+  final today = DateTime.now();
+
+  Future<void> checkAttendancedMarked(String userId) async {
+    final dateKey = "${today.day}-${today.month}-${today.year}";
+    try {
+      final docs = await firestore
+          .collection("Attendance")
+          .doc(userId)
+          .collection("dates")
+          .doc(dateKey)
+          .get();
+      if (docs.exists) {
+        _isAttendanceMarked = true;
+      } else {
+        _isAttendanceMarked = false;
+      }
+      notifyListeners();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
 
   /// Mark Attendance
   Future<void> markAttendance(String userId) async {
-    final today = DateTime.now();
-    final dateKey = '${today.year}-${today.month}-${today.day}';
-
+    final dateKey = '${today.day}-${today.month}-${today.year}';
     try {
       final docs = await firestore
           .collection('Attendance')
@@ -23,7 +44,7 @@ class AttendanceProvider extends ChangeNotifier {
       }
 
       await firestore
-          .collection('Attendace')
+          .collection('Attendance')
           .doc(userId)
           .collection('dates')
           .doc(dateKey)
@@ -31,6 +52,7 @@ class AttendanceProvider extends ChangeNotifier {
         'status': "Present",
         "timeStamp": Timestamp.now(),
       });
+      _isAttendanceMarked = true;
       notifyListeners();
     } catch (e) {
       throw e.toString();
