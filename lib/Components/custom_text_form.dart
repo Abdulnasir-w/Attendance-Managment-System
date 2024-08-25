@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 class MyCustomTextFormField extends StatefulWidget {
   final String hintText;
   final String labelText;
-  final IconData prefixIcon;
+  final IconData? prefixIcon;
   final TextEditingController textEditingController;
   final TextInputType keyBoardType;
+  final int? maxLines;
   final bool isPassfield;
   final String? Function(String?)? validator;
 
@@ -13,11 +14,12 @@ class MyCustomTextFormField extends StatefulWidget {
     super.key,
     required this.hintText,
     required this.labelText,
-    required this.prefixIcon,
+    this.prefixIcon,
     required this.textEditingController,
     required this.keyBoardType,
     this.isPassfield = false,
     this.validator,
+    this.maxLines,
   });
 
   @override
@@ -31,11 +33,13 @@ class _MyCustomTextFormFieldState extends State<MyCustomTextFormField> {
     return TextFormField(
       obscureText: widget.isPassfield ? isVisible : false,
       controller: widget.textEditingController,
+      maxLines: widget.maxLines,
       keyboardType: widget.keyBoardType,
       decoration: InputDecoration(
         prefixIcon: Icon(widget.prefixIcon),
         labelText: widget.labelText,
         hintText: widget.hintText,
+        hintMaxLines: widget.maxLines,
         suffixIcon: widget.isPassfield
             ? IconButton(
                 onPressed: () {
