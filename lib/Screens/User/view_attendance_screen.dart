@@ -46,11 +46,6 @@ class ViewAttendanceScreen extends StatelessWidget {
               );
             } else {
               return ListView.builder(
-                physics: ScrollPhysics(
-                  parent: ScrollPhysics(
-                    parent: ScrollPhysics(),
-                  ),
-                ),
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final record = snapshot.data![index];
