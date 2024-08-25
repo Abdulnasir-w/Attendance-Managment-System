@@ -1,8 +1,8 @@
 import 'package:attendance_ms/Components/custom_button.dart';
 import 'package:attendance_ms/Components/custom_snakbar.dart';
 import 'package:attendance_ms/Components/custom_text_form.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart';
-import 'package:attendance_ms/Providers/leave_request_provider.dart';
+import 'package:attendance_ms/Providers/User/auth_provider.dart';
+import 'package:attendance_ms/Providers/User/leave_request_provider.dart';
 import 'package:attendance_ms/Utils/validator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

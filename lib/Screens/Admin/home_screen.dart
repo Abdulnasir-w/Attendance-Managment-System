@@ -1,5 +1,5 @@
 import 'package:attendance_ms/Components/custom_button.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart';
+import 'package:attendance_ms/Providers/User/auth_provider.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 

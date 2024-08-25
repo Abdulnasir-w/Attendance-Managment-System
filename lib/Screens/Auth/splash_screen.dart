@@ -1,4 +1,4 @@
-import 'package:attendance_ms/Providers/auth_provider.dart';
+import 'package:attendance_ms/Providers/User/auth_provider.dart';
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:attendance_ms/Screens/User/home_screen.dart';

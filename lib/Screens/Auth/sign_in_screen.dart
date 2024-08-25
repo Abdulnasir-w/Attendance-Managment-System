@@ -1,6 +1,6 @@
 import 'package:attendance_ms/Components/custom_button.dart';
 import 'package:attendance_ms/Components/custom_snakbar.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
+import 'package:attendance_ms/Providers/User/auth_provider.dart' as myauth;
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_up_screen.dart';
 import 'package:attendance_ms/Screens/User/home_screen.dart';
@@ -142,6 +142,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icons.lock_outline,
                       hintText: 'Enter Your Password',
                       textEditingController: passwordController,
+                      maxLines: 1,
                       isPassfield: true,
                       validator: (value) => validateNotEmpty(value),
                     ),

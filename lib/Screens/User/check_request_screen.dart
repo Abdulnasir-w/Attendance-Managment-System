@@ -1,5 +1,5 @@
-import 'package:attendance_ms/Providers/auth_provider.dart';
-import 'package:attendance_ms/Providers/leave_request_provider.dart';
+import 'package:attendance_ms/Providers/User/auth_provider.dart';
+import 'package:attendance_ms/Providers/User/leave_request_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ class CheckRequestScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: FutureBuilder(
             future: leaveRequest.getLeaveRequest(auth.user!.uId),
             builder: (context, snapshot) {
@@ -76,8 +76,10 @@ class CheckRequestScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(15),
                           ),
                           title: Text(record.date),
-                          trailing: Text(record.status,
-                              style: TextStyle(fontSize: 15)),
+                          trailing: Text(
+                            record.status,
+                            style: const TextStyle(fontSize: 15),
+                          ),
                         ),
                       ],
                     );

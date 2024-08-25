@@ -1,5 +1,5 @@
 import 'package:attendance_ms/Components/custom_text_form.dart';
-import 'package:attendance_ms/Providers/auth_provider.dart' as myauth;
+import 'package:attendance_ms/Providers/User/auth_provider.dart' as myauth;
 import 'package:attendance_ms/Utils/validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
