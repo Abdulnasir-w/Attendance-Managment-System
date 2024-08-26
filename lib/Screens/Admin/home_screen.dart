@@ -1,8 +1,8 @@
 import 'package:attendance_ms/Components/custom_tiles.dart';
 import 'package:attendance_ms/Providers/User/auth_provider.dart';
 import 'package:attendance_ms/Screens/Admin/generate_report_screen.dart';
-import 'package:attendance_ms/Screens/Admin/managa_attendance_screen.dart';
-import 'package:attendance_ms/Screens/Admin/manage_leave_request_screen.dart';
+import 'package:attendance_ms/Screens/Admin/Attendance%20Records/managa_attendance_screen.dart';
+import 'package:attendance_ms/Screens/Admin/Request%20Records/manage_leave_request_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
