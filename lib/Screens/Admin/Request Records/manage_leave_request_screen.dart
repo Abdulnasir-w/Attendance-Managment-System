@@ -3,7 +3,7 @@ import 'package:attendance_ms/Providers/Admin/admin_leave_request_provider.dart'
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../Components/custom_tiles.dart';
+import '../../../Components/custom_tiles.dart';
 
 class ManageLeaveRequestScreen extends StatelessWidget {
   const ManageLeaveRequestScreen({super.key});

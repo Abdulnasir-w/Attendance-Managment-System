@@ -9,10 +9,21 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
   // Fetch that user Who Submitted leave Requests
   Future<List<String>> fetchUserWithRequest() async {
     try {
-      final requsetUser = await firestore.collection("Leave Requests").get();
+      final requestUser = await firestore
+          .collection("Leave Requests")
+          // .doc("zFbmLFDw2qhyCa4TlpShkXrXvsB2")
+          .get();
 
-      return requsetUser.docs.map((docs) => docs.id).toList();
+      // return requestUser.docs.map((doc) => doc.id).toList();
+      // print("Request user id: ${requestUser.id}");
+      // return [requestUser.id];
+      final userIds = requestUser.docs
+          .map((doc) => doc.data()['userId'] as String)
+          .toList();
+
+      return userIds;
     } catch (e) {
+      print("Error fetching users: $e");
       throw e.toString();
     }
   }
