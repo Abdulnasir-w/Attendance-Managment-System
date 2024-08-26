@@ -101,7 +101,7 @@ class AuthProvider extends ChangeNotifier {
     if (firebaseUser != null) {
       DocumentSnapshot userInfo;
       if (firebaseUser.email == 'admin@gmail.com') {
-        userInfo = await firestore.collection('users').doc('admin').get();
+        userInfo = await firestore.collection('Admin').doc('Admin').get();
       } else {
         userInfo =
             await firestore.collection('users').doc(firebaseUser.uid).get();
