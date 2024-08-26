@@ -43,19 +43,22 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
         if (mounted) {
           Navigator.pop(context);
         }
-
-        const CustomSnakbar(
-            message: "Request Submitted Successfully",
-            alignment: Alignment.bottomCenter,
-            type: SnackBarType.success);
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(context,
+              message: "Request Submitted Successfully",
+              alignment: Alignment.bottomCenter,
+              type: SnackBarType.success);
+        }
       } catch (e) {
         setState(() {
           isLoading = false;
         });
-        CustomSnakbar(
-            message: e.toString(),
-            alignment: Alignment.bottomCenter,
-            type: SnackBarType.error);
+        if (mounted) {
+          CustomSnakbar.showCustomSnackbar(context,
+              message: e.toString(),
+              alignment: Alignment.bottomCenter,
+              type: SnackBarType.error);
+        }
       } finally {
         setState(() {
           isLoading = false;
