@@ -42,48 +42,54 @@ class CheckRequestScreen extends StatelessWidget {
                   child: Text("No Attendance Record Found"),
                 );
               } else {
-                return ListView.builder(
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    final record = snapshot.data![index];
-                    return Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 25.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text("Date",
-                                  style: TextStyle(
-                                      fontSize: 17, color: Colors.lightBlue)),
-                              Text(
-                                "Status",
-                                style: TextStyle(
-                                    fontSize: 17, color: Colors.lightBlue),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ListTile(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: Colors.black,
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 25.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Date",
+                              style: TextStyle(
+                                  fontSize: 17, color: Colors.lightBlue),
                             ),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          title: Text(record.date),
-                          trailing: Text(
-                            record.status,
-                            style: const TextStyle(fontSize: 15),
-                          ),
+                            Text(
+                              "Status",
+                              style: TextStyle(
+                                  fontSize: 17, color: Colors.lightBlue),
+                            ),
+                          ],
                         ),
-                      ],
-                    );
-                  },
+                      ),
+                      // const SizedBox(height: 20),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          final record = snapshot.data![index];
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5.0),
+                            child: ListTile(
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: Colors.black,
+                                ),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              title: Text(record.date),
+                              trailing: Text(
+                                record.status,
+                                style: const TextStyle(fontSize: 15),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 );
               }
             }),
