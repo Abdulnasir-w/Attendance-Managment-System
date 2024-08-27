@@ -1,12 +1,12 @@
 import 'package:attendance_ms/Providers/Admin/admin_attendance_provider.dart';
-import 'package:attendance_ms/Screens/Admin/Attendance%20Records/detail_screen.dart';
+import 'package:attendance_ms/Screens/Admin/Attendance%20Records/user_attendance_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../Components/custom_tiles.dart';
 
-class ManagaAttendanceScreen extends StatelessWidget {
-  const ManagaAttendanceScreen({super.key});
+class ViewAttandanceScreen extends StatelessWidget {
+  const ViewAttandanceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +52,9 @@ class ManagaAttendanceScreen extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetalScreenOfUser(
+                              builder: (context) => UserAttendanceScreen(
                                 userId: data[index]['id'],
+                                name: data[index]['name'],
                               ),
                             ),
                           );
