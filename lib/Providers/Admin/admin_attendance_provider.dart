@@ -24,7 +24,10 @@ class AdminAttendanceProvider extends ChangeNotifier {
           .collection('Attendance')
           .doc(userId)
           .collection('dates')
-          .orderBy('timeStamp', descending: false)
+          .orderBy(
+            'timeStamp',
+            descending: false,
+          )
           .get();
 
       return user.docs.map((docs) {
