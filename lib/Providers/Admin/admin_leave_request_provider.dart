@@ -7,56 +7,60 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // Fetch that user Who Submitted leave Requests
-  Future<List<String>> fetchUserWithRequest() async {
+
+  Future<List<Map<String, dynamic>>> fetchAllUser() async {
     try {
-      final requestUser = await firestore
-          .collection("Leave Requests")
-          // .doc("zFbmLFDw2qhyCa4TlpShkXrXvsB2")
-          .get();
+      // Fetch all documents from the 'Leave Requests' collection
+      final QuerySnapshot querySnapshot =
+          await firestore.collection("Attendance").get();
 
-      // return requestUser.docs.map((doc) => doc.id).toList();
-      // print("Request user id: ${requestUser.id}");
-      // return [requestUser.id];
-      final userIds = requestUser.docs
-          .map((doc) => doc.data()['userId'] as String)
-          .toList();
-
-      return userIds;
-    } catch (e) {
-      print("Error fetching users: $e");
-      throw e.toString();
-    }
-  }
-
-  // Fetch all leave request for specific user
-  Future<List<AdminLeaveRequestModel>> fetchSpecificLeaveRequest(
-      String userId) async {
-    try {
-      final userRequests = await firestore
-          .collection("Leave Requests")
-          .doc(userId)
-          .collection("requests")
-          .where(
-            "status",
-            isEqualTo: "Pending",
-          )
-          .orderBy("timeStamp", descending: true)
-          .get();
-
-      return userRequests.docs.map((docs) {
-        return AdminLeaveRequestModel(
-          date: docs['date'],
-          reason: docs['reason'],
-          status: docs['status'],
-          userId: docs.reference.parent.parent!.id,
-          leaveRequestId: docs.id,
-        );
+      // Convert each document to a map and collect them in a list
+      final List<Map<String, dynamic>> allDocuments =
+          querySnapshot.docs.map((doc) {
+        return doc.data() as Map<String, dynamic>;
       }).toList();
+
+      // Return the list of maps
+      return allDocuments;
     } catch (e) {
-      throw e.toString();
+      // Handle errors appropriately, perhaps log them or rethrow
+      throw Exception('Error fetching documents: $e');
     }
   }
 
+  // Future<List<AdminLeaveRequestModel>> fetchingPendingRequest() async {
+  //   try {
+  //     QuerySnapshot leaveRequestsSnapshot = await firestore
+  //         .collection('Leave Requests')
+  //         .where('status', isEqualTo: 'Pending')
+  //         .get();
+
+  //     List<AdminLeaveRequestModel> pendingRequests = [];
+  //     for (var doc in leaveRequestsSnapshot.docs) {
+  //       Map<String, dynamic> leaveRequestsData =
+  //           doc.data() as Map<String, dynamic>;
+
+  //       DocumentSnapshot userSnapshot = await firestore
+  //           .collection('users')
+  //           .doc(leaveRequestsData['userId'])
+  //           .get();
+
+  //       Map<String, dynamic> userData =
+  //           userSnapshot.data() as Map<String, dynamic>;
+
+  //       pendingRequests.add(AdminLeaveRequestModel(
+  //           date: leaveRequestsData['date'],
+  //           reason: leaveRequestsData['reason'],
+  //           userName: userData['name'],
+  //           status: leaveRequestsData['status'],
+  //           userId: leaveRequestsData['userId'],
+  //           leaveRequestId: doc.id));
+  //     }
+  //     return pendingRequests;
+  //   } catch (e) {
+  //     throw Exception("Error fetching pending leave requests: $e");
+  //   }
+  // }
   // Approve or Reject requests
 
   Future<void> updateLeaveRequest(
