@@ -6,7 +6,7 @@ import 'package:attendance_ms/Utils/profile_picture.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../Providers/User/auth_provider.dart';
+import '../../Providers/Auth/auth_provider.dart';
 import '../Auth/sign_in_screen.dart';
 
 class ProfileScreen extends StatelessWidget {

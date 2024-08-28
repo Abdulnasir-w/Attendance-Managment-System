@@ -1,5 +1,5 @@
 import 'package:attendance_ms/Providers/User/attendance_provider.dart';
-import 'package:attendance_ms/Providers/User/auth_provider.dart';
+import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

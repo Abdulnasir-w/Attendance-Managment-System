@@ -1,5 +1,5 @@
 import 'package:attendance_ms/Components/custom_snakbar.dart';
-import 'package:attendance_ms/Providers/User/auth_provider.dart' as myauth;
+import 'package:attendance_ms/Providers/Auth/auth_provider.dart' as myauth;
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

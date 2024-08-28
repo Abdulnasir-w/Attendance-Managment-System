@@ -45,76 +45,78 @@ class UserAttendanceScreen extends StatelessWidget {
             return Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15),
-              child: Column(
-                children: [
-                  Table(
-                    border: TableBorder.all(
-                        borderRadius: BorderRadius.circular(15)),
-                    columnWidths: const {
-                      0: FlexColumnWidth(2),
-                      1: FlexColumnWidth(2),
-                    },
-                    children: [
-                      const TableRow(
-                        decoration: BoxDecoration(
-                            color: Colors.lightBlue,
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15),
-                                topRight: Radius.circular(15)),
-                            shape: BoxShape.rectangle,
-                            backgroundBlendMode: BlendMode.difference),
-                        children: [
-                          TableCell(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "Data",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                          TableCell(
-                            child: Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text(
-                                "Status",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      ...data!.map((attendanceRecord) {
-                        return TableRow(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Table(
+                      border: TableBorder.all(
+                          borderRadius: BorderRadius.circular(15)),
+                      columnWidths: const {
+                        0: FlexColumnWidth(2),
+                        1: FlexColumnWidth(2),
+                      },
+                      children: [
+                        const TableRow(
+                          decoration: BoxDecoration(
+                              color: Colors.lightBlue,
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                              shape: BoxShape.rectangle,
+                              backgroundBlendMode: BlendMode.difference),
                           children: [
                             TableCell(
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  attendanceRecord.date,
+                                  "Data",
                                   textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
                                 ),
                               ),
                             ),
                             TableCell(
                               child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                                padding: EdgeInsets.all(8.0),
                                 child: Text(
-                                  attendanceRecord.status,
+                                  "Status",
                                   textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
                                 ),
                               ),
                             ),
                           ],
-                        );
-                      }),
-                    ],
-                  ),
-                ],
+                        ),
+                        ...data!.map((attendanceRecord) {
+                          return TableRow(
+                            children: [
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    attendanceRecord.date,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                              TableCell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    attendanceRecord.status,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             );
             // return ListView.builder(

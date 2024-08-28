@@ -66,15 +66,76 @@ class AttendanceProvider extends ChangeNotifier {
           .collection('Attendance')
           .doc(userId)
           .collection('dates')
-          .orderBy('timeStamp', descending: true)
+          .orderBy('timeStamp', descending: false)
           .get();
 
-      return getAttendances.docs.map((docs) {
-        return AttendanceModel(
-          date: docs.id,
-          status: docs['status'],
+      final List<AttendanceModel> attendanceList = [];
+      final now = DateTime.now();
+      final startOfTheMonth = DateTime(now.year, now.month, 1);
+
+      // Convert Firestore docs to a map for quick lookup
+      final attendanceMap = {
+        for (var doc in getAttendances.docs) doc.id: doc['status']
+      };
+
+      for (int i = 0; i < now.day; i++) {
+        final date = startOfTheMonth.add(Duration(days: i));
+        final dateKey = "${date.day}-${date.month}-${date.year}";
+
+        final status = attendanceMap[dateKey] ?? 'Absent';
+        attendanceList.add(
+          AttendanceModel(date: dateKey, status: status),
         );
-      }).toList();
+
+        // Add "Absent" entry to Firestore if not already present
+        if (status == 'Absent') {
+          await firestore
+              .collection('Attendance')
+              .doc(userId)
+              .collection('dates')
+              .doc(dateKey)
+              .set(
+                  {
+                'status': 'Absent',
+                'timeStamp': Timestamp.now(),
+              },
+                  SetOptions(
+                      merge: true)); // Merge to avoid overwriting existing data
+        }
+      }
+      // final List<AttendanceModel> attendanceList = [];
+      // final now = DateTime.now();
+      // final startOfTheMonth = DateTime(now.year, now.month, 1);
+
+      // for (int i = 0; i < now.day; i++) {
+      //   final date = startOfTheMonth.add(Duration(days: i));
+      //   final dateKey = "${date.day}-${date.month}-${date.year}";
+
+      //   final attedanceDoc = getAttendances.docs.firstWhere(
+      //     (doc) => doc.id == dateKey,
+      //   );
+
+      //   if (attedanceDoc.exists) {
+      //     attendanceList.add(AttendanceModel(
+      //       date: dateKey,
+      //       status: attedanceDoc['status'],
+      //     ));
+      //   } else {
+      //     await firestore
+      //         .collection("Attendance")
+      //         .doc(userId)
+      //         .collection('dates')
+      //         .doc(dateKey)
+      //         .set({
+      //       'status': " Absent ",
+      //       "timeStamp": Timestamp.now(),
+      //     });
+      //     attendanceList.add(
+      //       AttendanceModel(date: dateKey, status: 'Absent'),
+      //     );
+      //   }
+      // }
+      return attendanceList;
     } catch (e) {
       throw e.toString();
     }

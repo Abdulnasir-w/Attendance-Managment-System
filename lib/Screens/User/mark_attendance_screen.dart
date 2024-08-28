@@ -2,7 +2,7 @@ import 'package:attendance_ms/Components/custom_button.dart';
 import 'package:attendance_ms/Components/custom_profile_tabs.dart';
 import 'package:attendance_ms/Components/custom_snakbar.dart';
 import 'package:attendance_ms/Providers/User/attendance_provider.dart';
-import 'package:attendance_ms/Providers/User/auth_provider.dart';
+import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

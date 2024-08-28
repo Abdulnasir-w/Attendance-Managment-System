@@ -41,6 +41,7 @@ class ViewAttandanceScreen extends StatelessWidget {
             } else if (snapshot.hasData) {
               final data = snapshot.data;
               return ListView.builder(
+                scrollDirection: Axis.vertical,
                 itemCount: data!.length,
                 itemBuilder: (context, index) {
                   return Padding(
