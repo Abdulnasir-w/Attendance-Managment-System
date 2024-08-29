@@ -9,54 +9,74 @@ import 'package:provider/provider.dart';
 import '../../Providers/Auth/auth_provider.dart';
 import '../Auth/sign_in_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
   @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  late Future<void> _fetchUserDataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserDataFuture =
+        Provider.of<AuthProvider>(context, listen: false).fetchUserData();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    final user = authProvider.user;
+    final authProvider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Profile",
-          style: TextStyle(color: Colors.white, fontSize: 20),
-        ),
+        title: const Text("Profile",
+            style: TextStyle(color: Colors.white, fontSize: 20)),
         centerTitle: true,
         backgroundColor: Colors.blue,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const ProfilePicture(),
-            const SizedBox(height: 70),
-            CustomProfileTabs(
-              title: 'Name :',
-              details: user!.name.toString(),
-            ),
-            const SizedBox(height: 20),
-            CustomProfileTabs(
-              title: 'Email :',
-              details: user.email,
-            ),
-            const SizedBox(height: 40),
-            MyCustomButton(
-                title: "Logout",
-                onPressed: () async {
-                  AuthProvider().signOut();
-
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LoginScreen(),
-                    ),
-                  );
-                }),
-          ],
-        ),
+      body: FutureBuilder<void>(
+        future: _fetchUserDataFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (authProvider.user == null) {
+            return const Center(child: Text('No user data available.'));
+          } else {
+            final user = authProvider.user!;
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const ProfilePicture(),
+                  const SizedBox(height: 70),
+                  CustomProfileTabs(
+                      title: 'Name :', details: user.name.toString()),
+                  const SizedBox(height: 20),
+                  CustomProfileTabs(title: 'Email :', details: user.email),
+                  const SizedBox(height: 40),
+                  MyCustomButton(
+                    title: "Logout",
+                    onPressed: () async {
+                      await authProvider.signOut();
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }

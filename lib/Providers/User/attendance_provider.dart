@@ -8,8 +8,13 @@ class AttendanceProvider extends ChangeNotifier {
   bool get isAttendanceMarked => _isAttendanceMarked;
   final today = DateTime.now();
 
-  Future<void> checkAttendancedMarked(String userId) async {
-    final dateKey = "${today.day}-${today.month}-${today.year}";
+  void reset() {
+    _isAttendanceMarked = false;
+    notifyListeners();
+  }
+
+  Future<void> checkAttendancedMarked(String userId, DateTime date) async {
+    final dateKey = "${date.day}-${date.month}-${date.year}";
     try {
       final docs = await firestore
           .collection("Attendance")
@@ -32,16 +37,16 @@ class AttendanceProvider extends ChangeNotifier {
   Future<void> markAttendance(String userId) async {
     final dateKey = '${today.day}-${today.month}-${today.year}';
     try {
-      final docs = await firestore
-          .collection('Attendance')
-          .doc(userId)
-          .collection('dates')
-          .doc(dateKey)
-          .get();
+      // final docs = await firestore
+      //     .collection('Attendance')
+      //     .doc(userId)
+      //     .collection('dates')
+      //     .doc(dateKey)
+      //     .get();
 
-      if (docs.exists) {
-        throw 'Your Attendance Already Marked For today!';
-      }
+      // if (docs.exists) {
+      //   throw 'Your Attendance Already Marked For today!';
+      // }
 
       await firestore
           .collection('Attendance')
