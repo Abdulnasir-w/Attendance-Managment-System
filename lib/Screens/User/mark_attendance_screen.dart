@@ -100,7 +100,7 @@ class _MarkAttendanceScreenState extends State<MarkAttendanceScreen> {
           future: _attendanceCheckFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data == false) {
@@ -120,8 +120,7 @@ class _MarkAttendanceScreenState extends State<MarkAttendanceScreen> {
                   const SizedBox(height: 20),
                   MyCustomButton(
                     title: "Mark Attendance",
-                    isLoading:
-                        isLoading, // Replace with your loading state if needed
+                    isLoading: isLoading,
                     onPressed: _markAttendance,
                   ),
                 ],

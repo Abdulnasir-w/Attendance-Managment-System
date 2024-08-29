@@ -23,7 +23,7 @@ class ManageLeaveRequestScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: FutureBuilder<List<String>>(
         future: leaveRequest.fetchAllUser(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -45,10 +45,10 @@ class ManageLeaveRequestScreen extends StatelessWidget {
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final user = data[index];
+
                 return Tiles(
                   onPressed: () {},
-                  title:
-                      user['userId'] ?? 'Unknown User', // Use the correct key
+                  title: user,
                 );
               },
             );

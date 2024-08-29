@@ -8,20 +8,19 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
 
   // Fetch that user Who Submitted leave Requests
 
-  Future<List<Map<String, dynamic>>> fetchAllUser() async {
+  Future<List<String>> fetchAllUser() async {
     try {
       // Fetch all documents from the 'Leave Requests' collection
       final QuerySnapshot querySnapshot =
-          await firestore.collection("Attendance").get();
+          await firestore.collection("Leave Requests").get();
 
-      // Convert each document to a map and collect them in a list
-      final List<Map<String, dynamic>> allDocuments =
-          querySnapshot.docs.map((doc) {
-        return doc.data() as Map<String, dynamic>;
-      }).toList();
-
-      // Return the list of maps
-      return allDocuments;
+      // Extract and filter unique userIds from the documents
+      List<String> userIds = querySnapshot.docs
+          .map((doc) => doc['userId'] as String)
+          .toSet()
+          .toList();
+      print(userIds);
+      return userIds;
     } catch (e) {
       // Handle errors appropriately, perhaps log them or rethrow
       throw Exception('Error fetching documents: $e');
