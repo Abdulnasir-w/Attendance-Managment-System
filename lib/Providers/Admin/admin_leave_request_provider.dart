@@ -1,78 +1,49 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../Model/admin_leave_model.dart';
-
 class AdminLeaveRequestProvider extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  List<Map<String, dynamic>> _users = [];
+  List<String> _userIdsWithRequests = [];
+  List<Map<String, dynamic>> get users => _users;
 
-  // Fetch that user Who Submitted leave Requests
-
-  Future<List<String>> fetchAllUser() async {
+  // Fetch all users
+  Future<void> fetchAllUsers() async {
     try {
-      // Fetch all documents from the 'Leave Requests' collection
-      final QuerySnapshot querySnapshot =
-          await firestore.collection("Leave Requests").get();
+      QuerySnapshot userSnapshot = await firestore.collection('users').get();
+      userSnapshot.docs.map((docs) => docs.id).toList();
 
-      // Extract and filter unique userIds from the documents
-      List<String> userIds = querySnapshot.docs
-          .map((doc) => doc['userId'] as String)
-          .toSet()
+      await fetchUsersWhoSendRequests();
+
+      // Filter users to show only those with leave requests
+      _users = userSnapshot.docs
+          .where((doc) => _userIdsWithRequests.contains(doc.id))
+          .map((doc) => doc.data() as Map<String, dynamic>)
           .toList();
-      print(userIds);
-      return userIds;
+      notifyListeners();
     } catch (e) {
-      // Handle errors appropriately, perhaps log them or rethrow
-      throw Exception('Error fetching documents: $e');
+      throw e.toString();
     }
   }
 
-  // Future<List<AdminLeaveRequestModel>> fetchingPendingRequest() async {
-  //   try {
-  //     QuerySnapshot leaveRequestsSnapshot = await firestore
-  //         .collection('Leave Requests')
-  //         .where('status', isEqualTo: 'Pending')
-  //         .get();
-
-  //     List<AdminLeaveRequestModel> pendingRequests = [];
-  //     for (var doc in leaveRequestsSnapshot.docs) {
-  //       Map<String, dynamic> leaveRequestsData =
-  //           doc.data() as Map<String, dynamic>;
-
-  //       DocumentSnapshot userSnapshot = await firestore
-  //           .collection('users')
-  //           .doc(leaveRequestsData['userId'])
-  //           .get();
-
-  //       Map<String, dynamic> userData =
-  //           userSnapshot.data() as Map<String, dynamic>;
-
-  //       pendingRequests.add(AdminLeaveRequestModel(
-  //           date: leaveRequestsData['date'],
-  //           reason: leaveRequestsData['reason'],
-  //           userName: userData['name'],
-  //           status: leaveRequestsData['status'],
-  //           userId: leaveRequestsData['userId'],
-  //           leaveRequestId: doc.id));
-  //     }
-  //     return pendingRequests;
-  //   } catch (e) {
-  //     throw Exception("Error fetching pending leave requests: $e");
-  //   }
-  // }
-  // Approve or Reject requests
-
-  Future<void> updateLeaveRequest(
-      String userId, String status, String requestId) async {
+  // Fetch that user Who Submitted leave Requests
+  Future<void> fetchUsersWhoSendRequests() async {
     try {
-      await firestore
-          .collection("Leave Requests")
-          .doc(userId)
-          .collection("requests")
-          .doc(requestId)
-          .update({
-        'status': status,
-      });
+      final users = await firestore.collection('users').get();
+      List<String> userIdsWithRequests = [];
+
+      for (var doc in users.docs) {
+        final userId = doc.id;
+        final leaveRequest = await firestore
+            .collection("Leave Requests")
+            .doc(userId)
+            .collection("requests")
+            .get();
+        if (leaveRequest.docs.isNotEmpty) {
+          userIdsWithRequests.add(userId);
+        }
+        _userIdsWithRequests = userIdsWithRequests;
+      }
       notifyListeners();
     } catch (e) {
       throw e.toString();

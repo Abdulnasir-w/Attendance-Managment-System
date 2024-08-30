@@ -61,19 +61,20 @@ class AdminHomeScreen extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              const ManageLeaveRequestScreen()));
+                              const UserLeaveRequestScreen()));
                 }),
             const SizedBox(
               height: 20,
             ),
             Tiles(
-                title: "Generate Report",
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const GenerateReportScreen()));
-                }),
+              title: "Generate Report",
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GenerateReportScreen()));
+              },
+            ),
           ],
         ),
       ),
