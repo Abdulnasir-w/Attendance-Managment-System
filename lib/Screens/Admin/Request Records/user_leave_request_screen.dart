@@ -1,11 +1,11 @@
-import 'package:attendance_ms/Model/admin_leave_model.dart';
 import 'package:attendance_ms/Providers/Admin/admin_leave_request_provider.dart';
+import 'package:attendance_ms/Screens/Admin/Request%20Records/view_user_request_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../Components/custom_tiles.dart';
 
-class ManageLeaveRequestScreen extends StatelessWidget {
-  const ManageLeaveRequestScreen({super.key});
+class UserLeaveRequestScreen extends StatelessWidget {
+  const UserLeaveRequestScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class ManageLeaveRequestScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Manage Leave Requests",
+          "User Leave Requests",
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
         centerTitle: true,
@@ -23,34 +23,47 @@ class ManageLeaveRequestScreen extends StatelessWidget {
         automaticallyImplyLeading: true,
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      body: FutureBuilder<List<String>>(
-        future: leaveRequest.fetchAllUser(),
+      body: FutureBuilder(
+        future: leaveRequest.fetchAllUsers(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error: ${snapshot.error}'),
-            );
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          } else if (leaveRequest.users.isEmpty) {
             return const Center(
-              child: Text("No Data is Present at This Time"),
+              child: Text("No leave requests found."),
             );
-          } else {
-            final data = snapshot.data!;
-
+          } else if (leaveRequest.users.isNotEmpty) {
             return ListView.builder(
-              itemCount: data.length,
+              itemCount: leaveRequest.users.length,
               itemBuilder: (context, index) {
-                final user = data[index];
-
-                return Tiles(
-                  onPressed: () {},
-                  title: user,
+                final user = leaveRequest.users[index];
+                final id = user['id'];
+                final userName = user['name'];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 15.0, vertical: 10),
+                  child: Tiles(
+                    title: userName,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewUserRequestScreen(
+                            title: userName,
+                            id: id,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 );
               },
+            );
+          } else {
+            return const Center(
+              child: Text("An Error Occured Please Try Again Later."),
             );
           }
         },
