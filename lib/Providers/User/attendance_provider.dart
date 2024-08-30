@@ -37,17 +37,6 @@ class AttendanceProvider extends ChangeNotifier {
   Future<void> markAttendance(String userId) async {
     final dateKey = '${today.day}-${today.month}-${today.year}';
     try {
-      // final docs = await firestore
-      //     .collection('Attendance')
-      //     .doc(userId)
-      //     .collection('dates')
-      //     .doc(dateKey)
-      //     .get();
-
-      // if (docs.exists) {
-      //   throw 'Your Attendance Already Marked For today!';
-      // }
-
       await firestore
           .collection('Attendance')
           .doc(userId)
