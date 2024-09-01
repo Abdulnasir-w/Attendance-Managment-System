@@ -41,6 +41,7 @@ class UserLeaveRequestScreen extends StatelessWidget {
                 final user = leaveRequest.users[index];
                 final id = user['id'];
                 final userName = user['name'];
+
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 15.0, vertical: 10),

@@ -1,3 +1,4 @@
+import 'package:attendance_ms/Model/admin_leave_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -18,8 +19,11 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
       // Filter users to show only those with leave requests
       _users = userSnapshot.docs
           .where((doc) => _userIdsWithRequests.contains(doc.id))
-          .map((doc) => doc.data() as Map<String, dynamic>)
-          .toList();
+          .map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        data['id'] = doc.id;
+        return data;
+      }).toList();
       notifyListeners();
     } catch (e) {
       throw e.toString();
@@ -45,6 +49,26 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
         _userIdsWithRequests = userIdsWithRequests;
       }
       notifyListeners();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  // Fetch Specfic user Request
+  Future<List<AdminLeaveRequestModel>> fetchUserRequest(String userId) async {
+    try {
+      final req = await firestore
+          .collection("Leave Requests")
+          .doc(userId)
+          .collection("requests")
+          .get();
+      return req.docs.map((doc) {
+        return AdminLeaveRequestModel(
+          date: doc['date'] ?? 'Unknown Date',
+          reason: doc['reason'] ?? 'No Reason Provided',
+          status: doc['status'] ?? 'Unknown Status',
+        );
+      }).toList();
     } catch (e) {
       throw e.toString();
     }
