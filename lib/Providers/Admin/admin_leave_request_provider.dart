@@ -67,8 +67,25 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
           date: doc['date'] ?? 'Unknown Date',
           reason: doc['reason'] ?? 'No Reason Provided',
           status: doc['status'] ?? 'Unknown Status',
+          leaveRequestId: doc.id,
         );
       }).toList();
+    } catch (e) {
+      throw e.toString();
+    }
+  }
+
+  // User Request Status
+  Future<void> updateStatus(String id, String requestId, String status) async {
+    try {
+      await firestore
+          .collection('Leave Requests')
+          .doc(id)
+          .collection("requests")
+          .doc(requestId)
+          .update({'status': status});
+
+      notifyListeners();
     } catch (e) {
       throw e.toString();
     }

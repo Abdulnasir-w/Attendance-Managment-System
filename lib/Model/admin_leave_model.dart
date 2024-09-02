@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AdminLeaveRequestModel {
-  // final String leaveRequestId;
+  final String leaveRequestId;
   final String date;
   final String reason;
   final String status;
@@ -10,7 +10,7 @@ class AdminLeaveRequestModel {
     required this.date,
     required this.reason,
     required this.status,
-    // required this.leaveRequestId,
+    required this.leaveRequestId,
   });
 
   factory AdminLeaveRequestModel.fromJson(DocumentSnapshot data) {
@@ -18,12 +18,12 @@ class AdminLeaveRequestModel {
       date: data['date'] ?? '', // Fallback to an empty string if null
       reason: data['reason'] ?? '',
       status: data['status'] ?? '',
-      // leaveRequestId: data['leaveRequestId'],
+      leaveRequestId: data['leaveRequestId'],
     );
   }
   Map<String, dynamic> toMap() {
     return {
-      // 'leaveRequestId': leaveRequestId,
+      'leaveRequestId': leaveRequestId,
       'date': date,
       'reason': reason,
       'status': status,

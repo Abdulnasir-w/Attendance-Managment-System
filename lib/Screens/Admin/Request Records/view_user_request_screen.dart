@@ -19,15 +19,42 @@ class ViewUserRequestScreen extends StatefulWidget {
 }
 
 class _ViewUserRequestScreenState extends State<ViewUserRequestScreen> {
+  bool isLoading = false; // To manage loading for each request
+  Future<void> requestLeave(String id, String requestId, String status) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await Future.delayed(Duration(milliseconds: 300));
+
+      await Provider.of<AdminLeaveRequestProvider>(context, listen: false)
+          .updateStatus(widget.id, requestId, status);
+    } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
+      throw e.toString();
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    print("BUilddd");
     final leave =
         Provider.of<AdminLeaveRequestProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         title: Text(
           widget.title,
-          style: const TextStyle(color: Colors.white, fontSize: 18),
+          style: const TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Colors.lightBlue,
@@ -55,41 +82,85 @@ class _ViewUserRequestScreenState extends State<ViewUserRequestScreen> {
               itemCount: leaveRequest.length,
               itemBuilder: (context, index) {
                 final request = leaveRequest[index];
+                // final isLoading =
+                //     loadingStates[request.leaveRequestId] ?? false;
                 return Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 15.0, vertical: 10),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 400,
-                        width: 400,
-                        child: Card(
-                          surfaceTintColor: Colors.lightBlue,
-                          shadowColor: Colors.blue,
-                          elevation: 5,
-                          child: Text(request.reason),
+                      horizontal: 15.0, vertical: 20),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 550,
+                          width: 400,
+                          child: Card(
+                            color: Colors.grey[50],
+                            elevation: 5,
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  request.date,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                Text(
+                                  request.reason,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      const Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          ApproveButtons(
-                            title: "Approve",
-                            textColor: Colors.white,
-                            icon: Icons.check_circle,
-                          ),
-                          ApproveButtons(
-                            title: "Cancel",
-                            textColor: Colors.white,
-                            icon: Icons.cancel,
-                          ),
-                        ],
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ApproveButtons(
+                              title: "Approve",
+                              textColor: Colors.white,
+                              icon: Icons.check_circle,
+                              isLoading: isLoading,
+                              onPressed: () async {
+                                requestLeave(widget.id, request.leaveRequestId,
+                                    "Approved");
+                              },
+                              btnColor: Colors.green,
+                            ),
+                            ApproveButtons(
+                              title: "Cancel",
+                              textColor: Colors.white,
+                              isLoading: isLoading,
+                              icon: Icons.cancel,
+                              onPressed: () async {
+                                await Future.delayed(
+                                    Duration(milliseconds: 300));
+                                requestLeave(widget.id, request.leaveRequestId,
+                                    "Reject");
+                              },
+                              btnColor: Colors.red,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
