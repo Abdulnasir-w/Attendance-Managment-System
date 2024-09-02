@@ -85,6 +85,37 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
           .collection("requests")
           .doc(requestId)
           .update({'status': status});
+      // Get the date from the leave request
+      final leaveRequestDoc = await firestore
+          .collection('LeaveRequests')
+          .doc(id)
+          .collection('Requests')
+          .doc(requestId)
+          .get();
+      final date = leaveRequestDoc.data()?['date'] as String;
+
+      // Update user attendance based on status
+      if (status == 'Approved') {
+        await firestore
+            .collection('UserAttendance')
+            .doc(id)
+            .collection('Attendance')
+            .doc(date)
+            .set({
+          'date': date,
+          'status': 'Present',
+        });
+      } else if (status == 'Rejected') {
+        await firestore
+            .collection('UserAttendance')
+            .doc(id)
+            .collection('Attendance')
+            .doc(date)
+            .set({
+          'date': date,
+          'status': 'Absent',
+        });
+      }
 
       notifyListeners();
     } catch (e) {
