@@ -42,6 +42,7 @@ class AdminLeaveRequestProvider extends ChangeNotifier {
             .collection("Leave Requests")
             .doc(userId)
             .collection("requests")
+            .where('status', isEqualTo: "Pending")
             .get();
         if (leaveRequest.docs.isNotEmpty) {
           userIdsWithRequests.add(userId);
