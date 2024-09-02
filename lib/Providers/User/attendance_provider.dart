@@ -67,7 +67,6 @@ class AttendanceProvider extends ChangeNotifier {
       final now = DateTime.now();
       final startOfTheMonth = DateTime(now.year, now.month, 1);
 
-      // Convert Firestore docs to a map for quick lookup
       final attendanceMap = {
         for (var doc in getAttendances.docs) doc.id: doc['status']
       };
@@ -75,6 +74,9 @@ class AttendanceProvider extends ChangeNotifier {
       for (int i = 0; i < now.day; i++) {
         final date = startOfTheMonth.add(Duration(days: i));
         final dateKey = "${date.day}-${date.month}-${date.year}";
+
+        // Skip future dates
+        if (date.isAfter(now)) continue;
 
         final status = attendanceMap[dateKey] ?? 'Absent';
         attendanceList.add(
@@ -97,38 +99,7 @@ class AttendanceProvider extends ChangeNotifier {
                       merge: true)); // Merge to avoid overwriting existing data
         }
       }
-      // final List<AttendanceModel> attendanceList = [];
-      // final now = DateTime.now();
-      // final startOfTheMonth = DateTime(now.year, now.month, 1);
 
-      // for (int i = 0; i < now.day; i++) {
-      //   final date = startOfTheMonth.add(Duration(days: i));
-      //   final dateKey = "${date.day}-${date.month}-${date.year}";
-
-      //   final attedanceDoc = getAttendances.docs.firstWhere(
-      //     (doc) => doc.id == dateKey,
-      //   );
-
-      //   if (attedanceDoc.exists) {
-      //     attendanceList.add(AttendanceModel(
-      //       date: dateKey,
-      //       status: attedanceDoc['status'],
-      //     ));
-      //   } else {
-      //     await firestore
-      //         .collection("Attendance")
-      //         .doc(userId)
-      //         .collection('dates')
-      //         .doc(dateKey)
-      //         .set({
-      //       'status': " Absent ",
-      //       "timeStamp": Timestamp.now(),
-      //     });
-      //     attendanceList.add(
-      //       AttendanceModel(date: dateKey, status: 'Absent'),
-      //     );
-      //   }
-      // }
       return attendanceList;
     } catch (e) {
       throw e.toString();
