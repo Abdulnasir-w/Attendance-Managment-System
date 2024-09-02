@@ -2,8 +2,7 @@ import 'package:attendance_ms/Model/admin_leave_model.dart';
 import 'package:attendance_ms/Providers/Admin/admin_leave_request_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../../Components/approve_cancel_buttons.dart';
+import 'approve_reject_request_screen.dart';
 
 class ViewUserRequestScreen extends StatefulWidget {
   final String title;
@@ -19,31 +18,9 @@ class ViewUserRequestScreen extends StatefulWidget {
 }
 
 class _ViewUserRequestScreenState extends State<ViewUserRequestScreen> {
-  bool isLoading = false; // To manage loading for each request
-  Future<void> requestLeave(String id, String requestId, String status) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      await Future.delayed(Duration(milliseconds: 300));
-
-      await Provider.of<AdminLeaveRequestProvider>(context, listen: false)
-          .updateStatus(widget.id, requestId, status);
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
-      throw e.toString();
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    print("BUilddd");
+    print("BUild");
     final leave =
         Provider.of<AdminLeaveRequestProvider>(context, listen: false);
     return Scaffold(
@@ -82,8 +59,6 @@ class _ViewUserRequestScreenState extends State<ViewUserRequestScreen> {
               itemCount: leaveRequest.length,
               itemBuilder: (context, index) {
                 final request = leaveRequest[index];
-                // final isLoading =
-                //     loadingStates[request.leaveRequestId] ?? false;
                 return Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 15.0, vertical: 20),
@@ -129,35 +104,9 @@ class _ViewUserRequestScreenState extends State<ViewUserRequestScreen> {
                         const SizedBox(
                           height: 30,
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ApproveButtons(
-                              title: "Approve",
-                              textColor: Colors.white,
-                              icon: Icons.check_circle,
-                              isLoading: isLoading,
-                              onPressed: () async {
-                                requestLeave(widget.id, request.leaveRequestId,
-                                    "Approved");
-                              },
-                              btnColor: Colors.green,
-                            ),
-                            ApproveButtons(
-                              title: "Cancel",
-                              textColor: Colors.white,
-                              isLoading: isLoading,
-                              icon: Icons.cancel,
-                              onPressed: () async {
-                                await Future.delayed(
-                                    Duration(milliseconds: 300));
-                                requestLeave(widget.id, request.leaveRequestId,
-                                    "Reject");
-                              },
-                              btnColor: Colors.red,
-                            ),
-                          ],
+                        ApproveRejectRequestScreen(
+                          leaveRequestId: request.leaveRequestId,
+                          userId: widget.id,
                         ),
                       ],
                     ),
