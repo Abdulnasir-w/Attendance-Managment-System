@@ -51,7 +51,7 @@ class AdminAttendanceProvider extends ChangeNotifier {
         // Skip future dates
         if (date.isAfter(now)) continue;
 
-        final status = attendanceMap[dateKey] ?? null;
+        final status = attendanceMap[dateKey];
 
         // Only add the entry if status is marked
         if (status != null) {
