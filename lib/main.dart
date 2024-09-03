@@ -1,5 +1,6 @@
 import 'package:attendance_ms/Providers/Admin/admin_attendance_provider.dart';
 import 'package:attendance_ms/Providers/Admin/admin_leave_request_provider.dart';
+import 'package:attendance_ms/Providers/Admin/generate_report_provider.dart';
 import 'package:attendance_ms/Providers/User/attendance_provider.dart';
 import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:attendance_ms/Providers/User/leave_request_provider.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AttendanceProvider()),
         ChangeNotifierProvider(create: (_) => AdminLeaveRequestProvider()),
         ChangeNotifierProvider(create: (_) => AdminAttendanceProvider()),
+        ChangeNotifierProvider(create: (_) => GenerateReportProvider()),
       ],
       child: const MaterialApp(
         title: "Attendance Management System",
