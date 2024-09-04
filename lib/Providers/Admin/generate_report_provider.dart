@@ -9,7 +9,7 @@ class GenerateReportProvider extends ChangeNotifier {
     try {
       final users = await firestore.collection("users").get();
       for (var user in users.docs) {
-        final username = user['name']; // Fetch the username
+        final username = user['name'];
         final userId = user.id;
         final attendanceRecords = await firestore
             .collection("Attendance")
