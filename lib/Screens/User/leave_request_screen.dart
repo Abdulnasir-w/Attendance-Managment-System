@@ -5,6 +5,7 @@ import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:attendance_ms/Providers/User/leave_request_provider.dart';
 import 'package:attendance_ms/Utils/validator.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class LeaveRequestScreen extends StatefulWidget {
@@ -67,6 +68,20 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
     }
   }
 
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? selectedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+    if (selectedDate != null && selectedDate != DateTime.now()) {
+      setState(() {
+        dateController.text = DateFormat('MM/dd/yyyy').format(selectedDate);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +90,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
           "Request For Leave",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 20,
+            fontSize: 18,
           ),
         ),
         centerTitle: true,
@@ -92,13 +107,17 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
                 key: formKey,
                 child: Column(
                   children: [
-                    MyCustomTextFormField(
-                      hintText: "2/2/2024",
-                      labelText: "Date",
-                      prefixIcon: Icons.date_range_outlined,
-                      textEditingController: dateController,
-                      keyBoardType: TextInputType.datetime,
-                      validator: (value) => validateNotEmpty(value),
+                    GestureDetector(
+                      onTap: () => _selectDate(context),
+                      child: AbsorbPointer(
+                        child: MyCustomTextFormField(
+                          hintText: "MM/DD/YYYY",
+                          labelText: "Date",
+                          prefixIcon: Icons.date_range_outlined,
+                          textEditingController: dateController,
+                          validator: (value) => validateNotEmpty(value),
+                        ),
+                      ),
                     ),
                     const SizedBox(
                       height: 20,
@@ -107,7 +126,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
                       hintText: "Enter a Valid Reason for Leave ",
                       labelText: "Reason",
                       textEditingController: reasonController,
-                      maxLines: 23,
+                      maxLines: 21,
                       keyBoardType: TextInputType.text,
                       validator: (value) => validateNotEmpty(value),
                     ),

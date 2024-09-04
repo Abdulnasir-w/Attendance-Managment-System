@@ -5,7 +5,7 @@ class MyCustomTextFormField extends StatefulWidget {
   final String labelText;
   final IconData? prefixIcon;
   final TextEditingController textEditingController;
-  final TextInputType keyBoardType;
+  final TextInputType? keyBoardType;
   final int? maxLines;
   final bool isPassfield;
   final String? Function(String?)? validator;
@@ -16,7 +16,7 @@ class MyCustomTextFormField extends StatefulWidget {
     required this.labelText,
     this.prefixIcon,
     required this.textEditingController,
-    required this.keyBoardType,
+    this.keyBoardType,
     this.isPassfield = false,
     this.validator,
     this.maxLines,
@@ -39,6 +39,7 @@ class _MyCustomTextFormFieldState extends State<MyCustomTextFormField> {
         prefixIcon: Icon(widget.prefixIcon),
         labelText: widget.labelText,
         hintText: widget.hintText,
+        alignLabelWithHint: true,
         hintMaxLines: widget.maxLines,
         suffixIcon: widget.isPassfield
             ? IconButton(
