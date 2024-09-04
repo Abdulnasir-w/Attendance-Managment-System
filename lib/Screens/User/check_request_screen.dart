@@ -14,7 +14,7 @@ class CheckRequestScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Check Request Rejected or Approved",
+          "Check Requests",
           style: TextStyle(color: Colors.white, fontSize: 18),
         ),
         centerTitle: true,
@@ -25,74 +25,90 @@ class CheckRequestScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: FutureBuilder(
-            future: leaveRequest.getLeaveRequest(auth.user!.uId),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(
-                    color: Colors.lightBlue,
-                  ),
-                );
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error : ${snapshot.error}"),
-                );
-              } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                return const Center(
-                  child: Text("No Attendance Record Found"),
-                );
-              } else {
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 25.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Date",
-                              style: TextStyle(
-                                  fontSize: 17, color: Colors.lightBlue),
-                            ),
-                            Text(
-                              "Status",
-                              style: TextStyle(
-                                  fontSize: 17, color: Colors.lightBlue),
-                            ),
-                          ],
-                        ),
+          future: leaveRequest.getLeaveRequest(auth.user!.uId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.lightBlue,
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text("Error : ${snapshot.error}"),
+              );
+            } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+              return const Center(
+                child: Text("No Request Record Found"),
+              );
+            } else {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Date",
+                            style: TextStyle(
+                                fontSize: 17, color: Colors.lightBlue),
+                          ),
+                          Text(
+                            "Status",
+                            style: TextStyle(
+                                fontSize: 17, color: Colors.lightBlue),
+                          ),
+                        ],
                       ),
-                      // const SizedBox(height: 20),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          final record = snapshot.data![index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5.0),
-                            child: ListTile(
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  color: Colors.black,
-                                ),
-                                borderRadius: BorderRadius.circular(15),
+                    ),
+                    // const SizedBox(height: 20),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final record = snapshot.data![index];
+                        final status = record.status;
+
+                        Color statusColor;
+
+                        switch (status.toLowerCase()) {
+                          case 'approved':
+                            statusColor = Colors.green;
+                            break;
+                          case 'rejected':
+                            statusColor = Colors.red;
+                            break;
+                          default:
+                            statusColor = Colors.grey;
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: Colors.black,
                               ),
-                              title: Text(record.date),
-                              trailing: Text(
-                                record.status,
-                                style: const TextStyle(fontSize: 15),
-                              ),
+                              borderRadius: BorderRadius.circular(15),
                             ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              }
-            }),
+                            title: Text(record.date),
+                            trailing: Text(
+                              record.status,
+                              style:
+                                  TextStyle(fontSize: 15, color: statusColor),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

@@ -77,7 +77,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
     );
     if (selectedDate != null && selectedDate != DateTime.now()) {
       setState(() {
-        dateController.text = DateFormat('MM/dd/yyyy').format(selectedDate);
+        dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
       });
     }
   }
@@ -111,7 +111,7 @@ class _LeaveRequestScreenState extends State<LeaveRequestScreen> {
                       onTap: () => _selectDate(context),
                       child: AbsorbPointer(
                         child: MyCustomTextFormField(
-                          hintText: "MM/DD/YYYY",
+                          hintText: "dd/MM/YYYY",
                           labelText: "Date",
                           prefixIcon: Icons.date_range_outlined,
                           textEditingController: dateController,
