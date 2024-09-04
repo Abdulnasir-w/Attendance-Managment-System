@@ -67,12 +67,17 @@ class _GenerateReportScreenState extends State<GenerateReportScreen> {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Center(
-        child: MyCustomButton(
-          isLoading: isLoading,
-          onPressed: () async {
-            generateReport();
-          },
-          title: 'Generate & Share Report',
+        child: Padding(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 20.0,
+          ),
+          child: MyCustomButton(
+            isLoading: isLoading,
+            onPressed: () async {
+              generateReport();
+            },
+            title: 'Generate & Share Report',
+          ),
         ),
       ),
     );
