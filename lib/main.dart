@@ -4,7 +4,6 @@ import 'package:attendance_ms/Providers/Admin/generate_report_provider.dart';
 import 'package:attendance_ms/Providers/User/attendance_provider.dart';
 import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:attendance_ms/Providers/User/leave_request_provider.dart';
-import 'package:attendance_ms/Screens/Auth/splash_screen.dart';
 import 'package:attendance_ms/no_internet_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
