@@ -22,6 +22,12 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
       if (results.contains(ConnectivityResult.none)) {
+        // if (mounted) {
+        //   Navigator.of(context).pushAndRemoveUntil(
+        //     MaterialPageRoute(builder: (context) => const NoInternetScreen()),
+        //     (Route<dynamic> route) => false,
+        //   );
+        // }
       } else {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -52,38 +58,34 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlue,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              'assets/no-connection.svg',
-              width: 250,
-              height: 250,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Center(
-              child: Text(
-                "No Internet...",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            const Text(
-              " Please Check Your Connection",
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SvgPicture.asset(
+            'assets/no-connection.svg',
+            width: 250,
+            height: 250,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          const Center(
+            child: Text(
+              "No Internet...",
+              textAlign: TextAlign.center,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
             ),
-          ],
-        ),
+          ),
+          const Text(
+            " Please Check Your Connection",
+            style: TextStyle(
+                color: Colors.black, fontSize: 18, fontWeight: FontWeight.w500),
+          ),
+        ],
       ),
     );
   }
