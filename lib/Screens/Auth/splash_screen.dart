@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:attendance_ms/Screens/Admin/home_screen.dart';
 import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:attendance_ms/Screens/User/home_screen.dart';
+import 'package:attendance_ms/no_internet_screen.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +17,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  late StreamSubscription<List<ConnectivityResult>> subscription;
   @override
   void initState() {
     super.initState();
@@ -46,6 +51,12 @@ class _SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       }
     }
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel(); // Cancel the subscription
+    super.dispose();
   }
 
   @override
