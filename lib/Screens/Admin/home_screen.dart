@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:attendance_ms/Components/custom_tiles.dart';
 import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
 import 'package:attendance_ms/Screens/Admin/Report%20Generate/generate_report_screen.dart';
@@ -7,9 +9,15 @@ import 'package:attendance_ms/Screens/Auth/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AdminHomeScreen extends StatelessWidget {
+class AdminHomeScreen extends StatefulWidget {
   const AdminHomeScreen({super.key});
 
+  @override
+  State<AdminHomeScreen> createState() => _AdminHomeScreenState();
+}
+
+class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<AuthProvider>(context, listen: false);
@@ -23,19 +31,44 @@ class AdminHomeScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {
-              auth.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginScreen(),
-                ),
-              );
+            padding: const EdgeInsets.only(right: 15),
+            onPressed: () async {
+              try {
+                setState(() {
+                  isLoading = true;
+                });
+                await Future.delayed(const Duration(seconds: 2));
+
+                await auth.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              } catch (e) {
+                setState(() {
+                  isLoading = false;
+                });
+                throw e.toString();
+              } finally {
+                setState(() {
+                  isLoading = false;
+                });
+              }
             },
-            icon: const Icon(
-              Icons.logout_outlined,
-              color: Colors.white,
-            ),
+            icon: isLoading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                    ),
+                  )
+                : const Icon(
+                    Icons.logout_outlined,
+                    color: Colors.white,
+                    size: 27,
+                  ),
           )
         ],
       ),

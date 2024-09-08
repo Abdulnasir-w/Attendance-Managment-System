@@ -18,6 +18,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late Future<void> _fetchUserDataFuture;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -63,13 +64,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 40),
                   MyCustomButton(
                     title: "Logout",
+                    isLoading: isLoading,
                     onPressed: () async {
-                      await authProvider.signOut();
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginScreen()),
-                      );
+                      try {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        await Future.delayed(const Duration(seconds: 2));
+                        await authProvider.signOut();
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const LoginScreen()),
+                        );
+                      } catch (e) {
+                        setState(() {
+                          isLoading = false;
+                        });
+                        throw e.toString();
+                      } finally {
+                        setState(() {
+                          isLoading = false;
+                        });
+                      }
                     },
                   ),
                 ],

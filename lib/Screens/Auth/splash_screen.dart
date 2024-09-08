@@ -18,10 +18,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late StreamSubscription<List<ConnectivityResult>> subscription;
+  bool isChecked = false;
   @override
   void initState() {
     super.initState();
-    initSplashScreen();
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
@@ -33,11 +33,12 @@ class _SplashScreenState extends State<SplashScreen> {
           );
         }
       } else {
-        if (mounted) {
+        if (!isChecked) {
           checkStatus();
         }
       }
     });
+    initSplashScreen();
   }
 
   Future<void> initSplashScreen() async {
@@ -46,6 +47,11 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkStatus() async {
+    if (isChecked) return; // Prevent multiple checks
+
+    setState(() {
+      isChecked = true;
+    });
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await authProvider.fetchUserData();
 
@@ -67,11 +73,14 @@ class _SplashScreenState extends State<SplashScreen> {
             MaterialPageRoute(builder: (context) => const LoginScreen()));
       }
     }
+    setState(() {
+      isChecked = false;
+    });
   }
 
   @override
   void dispose() {
-    subscription.cancel(); // Cancel the subscription
+    subscription.cancel();
     super.dispose();
   }
 

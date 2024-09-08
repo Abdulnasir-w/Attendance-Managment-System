@@ -20,7 +20,7 @@ class UserHomeScreen extends StatelessWidget {
           "A M S",
           style: TextStyle(
             color: Colors.white,
-            fontSize: 25,
+            fontSize: 22,
             fontWeight: FontWeight.bold,
             fontStyle: FontStyle.italic,
           ),
@@ -29,14 +29,15 @@ class UserHomeScreen extends StatelessWidget {
         backgroundColor: Colors.lightBlue,
         actions: [
           IconButton(
+            padding: const EdgeInsets.only(right: 15),
             onPressed: () => Navigator.push(context,
                 MaterialPageRoute(builder: (context) => const ProfileScreen())),
             icon: Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: SvgPicture.asset(
                 "assets/profile.svg",
-                width: 37,
-                height: 37,
+                width: 30,
+                height: 30,
               ),
             ),
           ),

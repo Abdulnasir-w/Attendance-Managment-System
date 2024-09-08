@@ -22,12 +22,6 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
         .onConnectivityChanged
         .listen((List<ConnectivityResult> results) {
       if (results.contains(ConnectivityResult.none)) {
-        // if (mounted) {
-        //   Navigator.of(context).pushAndRemoveUntil(
-        //     MaterialPageRoute(builder: (context) => const NoInternetScreen()),
-        //     (Route<dynamic> route) => false,
-        //   );
-        // }
       } else {
         if (mounted) {
           Navigator.of(context).pushAndRemoveUntil(
@@ -66,6 +60,7 @@ class _NoInternetScreenState extends State<NoInternetScreen> {
             'assets/no-connection.svg',
             width: 250,
             height: 250,
+            fit: BoxFit.contain,
           ),
           const SizedBox(
             height: 20,

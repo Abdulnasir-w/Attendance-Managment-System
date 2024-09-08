@@ -1,6 +1,7 @@
 import 'package:attendance_ms/Components/custom_snakbar.dart';
 import 'package:attendance_ms/Components/image_picker.dart';
 import 'package:attendance_ms/Providers/Auth/auth_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,16 +48,30 @@ class _ProfilePictureState extends State<ProfilePicture> {
       children: [
         CircleAvatar(
           radius: 80,
-          backgroundColor: Colors.blue,
-          backgroundImage:
-              profilePic ? NetworkImage(user.profilePicUrl.toString()) : null,
-          child: !profilePic
-              ? const Icon(
-                  Icons.person_2_outlined,
-                  size: 80,
-                  color: Colors.white,
-                )
-              : null,
+          backgroundColor: Colors.lightBlue[120],
+          child: ClipOval(
+            child: profilePic
+                ? CachedNetworkImage(
+                    imageUrl: user.profilePicUrl!,
+                    placeholder: (context, url) =>
+                        const CircularProgressIndicator(
+                      color: Colors.white,
+                    ),
+                    errorWidget: (context, url, error) => const Icon(
+                      Icons.error,
+                      color: Colors.red,
+                      size: 80,
+                    ),
+                    fit: BoxFit.cover,
+                    width: 180,
+                    height: 180,
+                  )
+                : const Icon(
+                    Icons.person_2_outlined,
+                    size: 80,
+                    color: Colors.white,
+                  ),
+          ),
         ),
         if (isLoading)
           const Positioned(
